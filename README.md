@@ -17,10 +17,9 @@ const {WordnikAPI} = require("wordnik-api");
 const api = new WordnikAPI("your_api_token");
 ```
 
-### Functions
+You can then use the methods described [in the docs](https://alexanderepolite.github.io/wordnik-javascript-api/classes/WordnikAPI.html)
+to use on the `api` object you created.  Have fun!
 
-coming soon
-
-# WARNING
+### Warning
 
 This API is very new.  I will be pushing changes soon to make sure it is ready to work in production environments.
