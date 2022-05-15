@@ -9,7 +9,17 @@ for TypeScript developers.
 
 ## Usage
 
-Coming (very) soon :)
+### Initializing the API
+
+```js
+const {WordnikAPI} = require("wordnik-api");
+
+const api = new WordnikAPI("your_api_token");
+```
+
+### Functions
+
+coming soon
 
 # WARNING
 
