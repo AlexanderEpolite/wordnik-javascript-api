@@ -1,0 +1,30 @@
+{
+  "name": "wordnik-api",
+  "version": "0.0.1",
+  "description": "Community API for https://wordnik.com with types",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wordnik",
+    "api"
+  ],
+  "author": "Alexander Epolite <alexander@epolite.net>",
+  "contributors": [
+    {
+      "name": "Alexander Epolite",
+      "email": "alexander@epolite.net",
+      "url": "https://epolite.net"
+    }
+  ],
+  "license": "See LICENSE.txt",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.33",
+    "@types/node-fetch": "^2.6.1",
+    "tslib": "^2.4.0"
+  }
+}
