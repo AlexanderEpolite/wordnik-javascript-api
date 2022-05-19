@@ -1,4 +1,7 @@
 
+/**
+ * Describes relationship types between words.
+ */
 export enum RelationshipType {
     synonym = "synonym",
     antonym = "antonym",

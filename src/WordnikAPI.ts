@@ -1,6 +1,3 @@
-/**
- * Defines the WordnikAPI class.
- */
 import fetch from "node-fetch";
 import {PartOfSpeech} from "./struct/PartOfSpeech";
 import Word from "./entity/Word";
@@ -12,10 +9,16 @@ import Phrase from "./entity/Phrase";
 import Pronunciation from "./entity/Pronunciation";
 import {RelationshipType} from "./struct/RelationshipType";
 import RelatedWord from "./entity/RelatedWord";
+import RandomWord from "./entity/RandomWord";
+import WordOfTheDay from "./entity/WordOfTheDay";
 
+/**
+ * Defines the WordnikAPI class.
+ */
 export default class WordnikAPI {
     
     private static readonly BASE_URL = "https://api.wordnik.com/v4/word.json/";
+    private static readonly WORDS_URL = "https://api.wordnik.com/v4/words.json/";
     
     /**
      * Constructs a new WordnikAPI instance.
@@ -24,6 +27,9 @@ export default class WordnikAPI {
     public constructor(
         private readonly API_KEY: string,
     ) {
+        if(!API_KEY || API_KEY.length === 0) {
+            throw new Error("API_KEY must be defined.");
+        }
     }
     
     /**
@@ -32,6 +38,7 @@ export default class WordnikAPI {
      * @param endpoint {string} The endpoint to call.
      * @param params {object} The parameters to pass to the endpoint.
      * @param base_url {string} The base URL to use (optional).
+     * 
      * @private
      */
     private async makeRequest(endpoint: string, params: any, base_url: string = WordnikAPI.BASE_URL): Promise<any> {
@@ -64,6 +71,7 @@ export default class WordnikAPI {
     
     /**
      * Gets the API key.
+     * 
      * @returns {string} The API key.
      */
     public getAPIKey(): string {
@@ -72,6 +80,8 @@ export default class WordnikAPI {
     
     /**
      * Get definitions for a word.
+     * 
+     * https://developer.wordnik.com/docs#!/word/getDefinitions
      *
      * @param word {string} The word to get definitions for.
      * @param limit {number} The limit of definitions to get.
@@ -114,6 +124,8 @@ export default class WordnikAPI {
     
     /**
      * Get the audio metadata for a word.
+     * 
+     * https://developer.wordnik.com/docs#!/word/getAudio
      *
      * @param word {string} The word to get audio metadata for.
      * @param useCanonical {boolean} Whether to use the canonical form of the word (e.g. "cats" -> "cat").
@@ -147,6 +159,8 @@ export default class WordnikAPI {
     
     /**
      * Get the etymologies for a word.
+     * 
+     * https://developer.wordnik.com/docs#!/word/getEtymologies
      *
      * @param word {string} The word to get etymologies for.
      * @param useCanonical {boolean} Whether to use the canonical form of the word (e.g. "cats" -> "cat").
@@ -176,6 +190,8 @@ export default class WordnikAPI {
     
     /**
      * Get examples of a word's usage.
+     * 
+     * https://developer.wordnik.com/docs#!/word/getExamples
      *
      * @param word {string} The word to get examples for.
      * @param includeDuplicates {boolean} Whether to include duplicate examples.
@@ -221,6 +237,9 @@ export default class WordnikAPI {
     
     /**
      * Get the frequency of a word.
+     * 
+     * https://developer.wordnik.com/docs#!/word/getWordFrequency
+     * 
      * @param word {string} The word to get the frequency of.
      * @param useCanonical {boolean} Whether to use the canonical form of the word (e.g. "cats" -> "cat").
      * @param startYear {number} The start year to get the frequency of.
@@ -255,6 +274,8 @@ export default class WordnikAPI {
     
     /**
      * Get the word's hyphenation.
+     * 
+     * https://developer.wordnik.com/docs#!/word/getHyphenation
      *
      * @param word {string} The word to get the hyphenation of.
      * @param useCanonical {boolean} Whether to use the canonical form of the word (e.g. "cats" -> "cat").
@@ -294,9 +315,13 @@ export default class WordnikAPI {
     /**
      * Get word phrases
      * 
+     * https://developer.wordnik.com/docs#!/word/getPhrases
+     * 
      * @param word {string} The word to get the phrases of.
      * @param useCanonical {boolean} Whether to use the canonical form of the word (e.g. "cats" -> "cat").
      * @param limit {number} The limit of phrases to get.
+     * 
+     * @returns {Promise<Phrase[] | null>} The word's phrases.
      */
     public async getPhrases(word: string, useCanonical: boolean = false, limit: number = 1): Promise<Phrase[] | null> {
         try {
@@ -324,6 +349,8 @@ export default class WordnikAPI {
     
     /**
      * Get the word's Pronunciation.
+     * 
+     * https://developer.wordnik.com/docs#!/word/getTextPronunciations
      * 
      * @param word {string} The word to get the pronunciation of.
      * @param useCanonical {boolean} Whether to use the canonical form of the word (e.g. "cats" -> "cat").
@@ -365,6 +392,9 @@ export default class WordnikAPI {
     
     /**
      * Get related words.
+     * 
+     * https://developer.wordnik.com/docs#!/word/getRelatedWords
+     * 
      * @param word {string} The word to get related words for.
      * @param useCanonical {boolean} Whether to use the canonical form of the word (e.g. "cats" -> "cat").
      * @param relationshipTypes {RelationshipType | undefined} The relationship types to get.
@@ -403,6 +433,8 @@ export default class WordnikAPI {
      * Get the scrabble score of a word.
      * You may want to lowercase the word before passing it in.
      * 
+     * https://developer.wordnik.com/docs#!/word/getScrabbleScore
+     * 
      * @param word {string} The word to get the scrabble score of.
      * 
      * @returns {Promise<number | null>} The scrabble score of the word, or null if the word is not found.
@@ -421,6 +453,8 @@ export default class WordnikAPI {
     /**
      * Get the top example of a word.
      * 
+     * https://developer.wordnik.com/docs#!/word/getTopExample
+     * 
      * @param word {string} The word to get the top example of.
      * @param useCanonical {boolean} Whether to use the canonical form of the word (e.g. "cats" -> "cat").
      * 
@@ -435,4 +469,126 @@ export default class WordnikAPI {
             return null;
         }
     }
+    
+    /**
+     * Get a random word.
+     * 
+     * https://developer.wordnik.com/docs#!/words/getRandomWord
+     * 
+     * @param hasDictionaryDef {"true" | "false"} Only return words with dictionary definitions
+     * @param includePartOfSpeech {PartOfSpeech | undefined} Only return words with the specified part of speech.
+     * @param excludePartOfSpeech {PartOfSpeech | undefined} Only return words without the specified part of speech.
+     * @param minCorpusCount {number | undefined} Minimum corpus frequency for terms
+     * @param maxCorpusCount {number | undefined} Maximum corpus frequency for terms
+     * @param minDictionaryCount {number | undefined} Minimum dictionary count
+     * @param maxDictionaryCount {number | undefined} Maximum dictionary count
+     * @param minLength {number | undefined} Minimum word length
+     * @param maxLength {number | undefined} Maximum word length
+     */
+    public async getRandomWord(hasDictionaryDef: "true" | "false" = "true",
+                               includePartOfSpeech: PartOfSpeech | undefined = undefined,
+                               excludePartOfSpeech: PartOfSpeech | undefined = undefined,
+                               minCorpusCount: number | undefined = undefined,
+                               maxCorpusCount: number | undefined = undefined,
+                               minDictionaryCount: number | undefined = undefined,
+                               maxDictionaryCount: number | undefined = undefined,
+                               minLength: number | undefined = undefined,
+                               maxLength: number | undefined = undefined): Promise<RandomWord | null> {
+        try {
+            return await this.makeRequest("randomWord", {
+                hasDictionaryDef: hasDictionaryDef,
+                includePartOfSpeech: includePartOfSpeech,
+                excludePartOfSpeech: excludePartOfSpeech,
+                minCorpusCount: minCorpusCount,
+                maxCorpusCount: maxCorpusCount,
+                minDictionaryCount: minDictionaryCount,
+                maxDictionaryCount: maxDictionaryCount,
+                minLength: minLength,
+                maxLength: maxLength,
+            }, WordnikAPI.WORDS_URL);
+        } catch (e) {
+            return null;
+        }
+    }
+    
+    /**
+     * Get random words.
+     * 
+     * https://developer.wordnik.com/docs#!/words/getRandomWords
+     * 
+     * @param hasDictionaryDef {"true" | "false"} Only return words with dictionary definitions
+     * @param includePartOfSpeech {PartOfSpeech[] | undefined} Only return words with the specified part of speech.
+     * @param excludePartOfSpeech {PartOfSpeech[] | undefined} Only return words without the specified part of speech.
+     * @param minCorpusCount {number | undefined} Minimum corpus frequency for terms
+     * @param maxCorpusCount {number | undefined} Maximum corpus frequency for terms
+     * @param minDictionaryCount {number | undefined} Minimum dictionary count
+     * @param maxDictionaryCount {number | undefined} Maximum dictionary count
+     * @param minLength {number | undefined} Minimum word length
+     * @param maxLength {number | undefined} Maximum word length
+     * @param sortBy {"alpha" | "count" | undefined} Sort by
+     * @param sortOrder {"asc" | "desc" | undefined} Sort order
+     * @param limit {number | undefined} Limit
+     * 
+     * @returns {Promise<RandomWord[]>} Random words, or an empty array if no words were found.
+     */
+    public async getRandomWords(hasDictionaryDef: "true" | "false" = "true",
+                             includePartOfSpeech: PartOfSpeech[] | undefined = undefined,
+                             excludePartOfSpeech: PartOfSpeech[] | undefined = undefined,
+                             minCorpusCount: number | undefined = undefined,
+                             maxCorpusCount: number | undefined = undefined,
+                             minDictionaryCount: number | undefined = undefined,
+                             maxDictionaryCount: number | undefined = undefined,
+                             minLength: number | undefined = undefined,
+                             maxLength: number | undefined = undefined,
+                             sortBy: "alpha" | "count" | undefined = undefined,
+                             sortOrder: "asc" | "desc" | undefined = undefined,
+                             limit: number = 10): Promise<RandomWord[]> {
+        //this returns an array of random words
+        try {
+            return await this.makeRequest("randomWords", {
+                hasDictionaryDef: hasDictionaryDef,
+                includePartOfSpeech: includePartOfSpeech,
+                excludePartOfSpeech: excludePartOfSpeech,
+                minCorpusCount: minCorpusCount,
+                maxCorpusCount: maxCorpusCount,
+                minDictionaryCount: minDictionaryCount,
+                maxDictionaryCount: maxDictionaryCount,
+                minLength: minLength,
+                maxLength: maxLength,
+                sortBy: sortBy,
+                sortOrder: sortOrder,
+                limit: limit,
+            }, WordnikAPI.WORDS_URL);
+        } catch (e) {
+            return [];
+        }
+    }
+    
+    /**
+     * Get the word of the day.
+     * 
+     * https://developer.wordnik.com/docs#!/words/getWordOfTheDay
+     * 
+     * @param date {Date | string | undefined} the Date to get the word of the day for, a string in the format yyyy-MM-dd, or undefined to get the word of the day for today.
+     * @returns {Promise<WordOfTheDay | null>}
+     */
+    public async getWordOfTheDay(date: string | Date | undefined = undefined): Promise<WordOfTheDay | null> {
+        //the date should be in the format yyyy-MM-dd, validate that it is if it is a string, otherwise use the date
+        if(date && typeof date === "string") {
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+                throw new Error("Invalid date format, should be yyyy-MM-dd");
+            }
+        } else if(date && date instanceof Date) {
+            date = date.toISOString().substring(0, 10);
+        }
+        
+        try {
+            return await this.makeRequest("wordOfTheDay", {
+                date: date,
+            }, WordnikAPI.WORDS_URL);
+        } catch (e) {
+            return null;
+        }
+    }
+    
 }
