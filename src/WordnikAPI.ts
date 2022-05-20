@@ -20,15 +20,17 @@ export default class WordnikAPI {
     private static readonly BASE_URL = "https://api.wordnik.com/v4/word.json/";
     private static readonly WORDS_URL = "https://api.wordnik.com/v4/words.json/";
     
+    private readonly API_KEY: string;
+    
     /**
      * Constructs a new WordnikAPI instance.
      * @param API_KEY {string} The API key to use.
      */
-    public constructor(
-        private readonly API_KEY: string,
-    ) {
+    public constructor(API_KEY: string) {
+        this.API_KEY = API_KEY;
+        
         if(!API_KEY || API_KEY.length === 0) {
-            throw new Error("API_KEY must be defined.");
+            throw new Error("API_KEY must be defined.  See https://developer.wordnik.com/gettingstarted to obtain one.");
         }
     }
     
@@ -64,6 +66,11 @@ export default class WordnikAPI {
             method: "GET",
             redirect: "error",
         });
+        
+        if(res.status === 401) {
+            console.error("[wordnik-api]: Invalid API key.  If you do not have an API key, go to https://developer.wordnik.com/gettingstarted to get one.");
+            throw new Error("Invalid API key.");
+        }
         
         //return the response
         return await res.json();
@@ -592,3 +599,5 @@ export default class WordnikAPI {
     }
     
 }
+
+new WordnikAPI("asasd").getRandomWord().then(console.log).catch(console.error);
