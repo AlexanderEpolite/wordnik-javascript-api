@@ -1,6 +1,6 @@
 {
   "name": "wordnik-api",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Community API for https://wordnik.com with types",
   "main": "dist/index.js",
   "scripts": {
