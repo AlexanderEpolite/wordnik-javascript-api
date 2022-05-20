@@ -599,5 +599,3 @@ export default class WordnikAPI {
     }
     
 }
-
-new WordnikAPI("asasd").getRandomWord().then(console.log).catch(console.error);
