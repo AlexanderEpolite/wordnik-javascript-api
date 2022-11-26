@@ -101,7 +101,7 @@ export default class WordnikAPI {
      */
     public async getDefinitions(word: string,
                                 limit: number = 1,
-                                partOfSpeech: PartOfSpeech | undefined = undefined,
+                                partOfSpeech: PartOfSpeech[] | PartOfSpeech | undefined = undefined,
                                 sourceDictionary: "all" | "ahd-5" | "century" | "wiktionary" | "webster" | "wordnet" = "all",
                                 useCanonical: boolean = false,
                                 includeTags: boolean = false): Promise<Word[] | null> {
