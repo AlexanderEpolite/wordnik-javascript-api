@@ -19,7 +19,7 @@
       "url": "https://epolite.net"
     }
   ],
-  "license": "See LICENSE.txt",
+  "license": "Unlicense",
   "dependencies": {
     "node-fetch": "^2.6.7",
     "tslib": "^2.4.0"
