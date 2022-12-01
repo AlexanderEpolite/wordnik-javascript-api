@@ -2,11 +2,6 @@
 
 #### Note: this is a community made project, it is not affiliated with Wordnik.
 
-## Why another Wordnik API?
-
-The simple answer is that the other Wordnik APIs are older, and do not have built-in types, making it difficult to use
-for TypeScript developers.
-
 ## Usage
 
 ### Obtain an API key
@@ -22,19 +17,28 @@ npm i wordnik-api
 yarn add wordnik-api
 ```
 
-### Initializing the API
+### Initializing the API (TypeScript)
 
-```js
+```typescript
+import {WordnikAPI} from "wordnik-api";
+
+const api = new WordnikAPI("your_api_key");
+```
+
+### Initializing the API (JavaScript)
+
+```javascript
 const {WordnikAPI} = require("wordnik-api");
 
 const api = new WordnikAPI("your_api_key");
 ```
 
-You can then use the methods described [in the docs](https://alexanderepolite.github.io/wordnik-javascript-api/classes/WordnikAPI.html)
+## Documentation
+
+After initializing the API use the methods described [in the docs](https://alexanderepolite.github.io/wordnik-javascript-api/classes/WordnikAPI.html)
 to use on the `api` object you created.  Have fun!
 
-### Contributing
+## Contributing
 
 Want to contribute?  Contributions are always welcome!  Please visit the
-[GitHub repo](https://github.com/alexanderepolite/wordnik-javascript-api/) and make a
-pull request with your contributions.
+[GitHub repo](https://github.com/alexanderepolite/wordnik-javascript-api/) and make a pull request with your contributions.
